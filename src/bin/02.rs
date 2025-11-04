@@ -12,7 +12,7 @@ pub fn part_one(input: &str) -> Option<u64> {
         3*a*b + 2*(a*c+b*c)
     }
 
-    Some(input.lines().map(|l| solve(get_dims(l))).sum())
+    Some(input.lines().map(get_dims).map(solve).sum())
 
 }
 
@@ -22,7 +22,7 @@ pub fn part_two(input: &str) -> Option<u64> {
         2*(a+b)+a*b*c
     }
 
-    Some(input.lines().map(|l| solve(get_dims(l))).sum())
+    Some(input.lines().map(get_dims).map(solve).sum())
 }
 
 #[cfg(test)]
