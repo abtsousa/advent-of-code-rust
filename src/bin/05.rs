@@ -3,12 +3,11 @@ use itertools::Itertools;
 advent_of_code::solution!(5);
 
 fn validate_duplicate_chars(input: &str) -> bool {
-    let mut lastchar: char = '\n';
-    for char in input.chars() {
-        if char == lastchar {
+    let bytes = input.as_bytes();
+    for i in 1..bytes.len() {
+        if bytes[i] == bytes[i - 1] {
             return true;
         }
-        lastchar = char;
     }
     false
 }
@@ -27,7 +26,7 @@ fn validate_vowels(input: &str) -> bool {
 fn validate_invalid_chars(input: &str) -> bool {
     for sequence in ["ab", "cd", "pq", "xy"] {
         if input.contains(sequence) {
-            return false
+            return false;
         }
     }
     true
@@ -36,10 +35,11 @@ fn validate_invalid_chars(input: &str) -> bool {
 pub fn part_one(input: &str) -> Option<u64> {
     let mut count: u64 = 0;
     for line in input.lines() {
-        if validate_duplicate_chars(line) &&
-           validate_invalid_chars(line) &&
-           validate_vowels(line) {
-               count += 1;
+        if validate_duplicate_chars(line)
+            && validate_invalid_chars(line)
+            && validate_vowels(line)
+        {
+            count += 1;
         }
     }
     Some(count)
@@ -51,10 +51,12 @@ fn validate_two_letters_repeat_pattern_no_overlap(input: &str) -> bool {
     // abcdef
     // ii....
     // ..jj..
-    for i in 0..input.len()-3 {
-        for j in i+2..input.len()-1 {
-            if input[i..=i+1] == input[j..=j+1] {
-                return true
+
+    let bytes = input.as_bytes();
+    for i in 0..bytes.len() - 3 {
+        for j in i + 2..bytes.len() - 1 {
+            if bytes[i..i + 2] == bytes[j..j + 2] {
+                return true;
             }
         }
     }
@@ -62,15 +64,11 @@ fn validate_two_letters_repeat_pattern_no_overlap(input: &str) -> bool {
 }
 
 fn validate_duplicate_chars_with_gap(input: &str) -> bool {
-    let mut chars = input.trim().chars();
-    let mut n_minus2: char = chars.next().unwrap();
-    let mut n_minus1: char = chars.next().unwrap();
-    for char in chars {
-        if char == n_minus2 {
+    let bytes = input.as_bytes();
+    for i in 0..bytes.len() - 2 {
+        if bytes[i] == bytes[i + 2] {
             return true;
         }
-        n_minus2 = n_minus1;
-        n_minus1 = char;
     }
     false
 }
@@ -78,9 +76,10 @@ fn validate_duplicate_chars_with_gap(input: &str) -> bool {
 pub fn part_two(input: &str) -> Option<u64> {
     let mut count: u64 = 0;
     for line in input.lines() {
-        if validate_duplicate_chars_with_gap(line) &&
-           validate_two_letters_repeat_pattern_no_overlap(line) {
-               count += 1;
+        if validate_duplicate_chars_with_gap(line)
+            && validate_two_letters_repeat_pattern_no_overlap(line)
+        {
+            count += 1;
         }
     }
     Some(count)
