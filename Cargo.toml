@@ -30,3 +30,5 @@ tinyjson = "2.5.1"
 # Solution dependencies
 itertools = "0.14.0"
 md5 = "0.8.0"
+regex = "1.12.2"
+bitmaps = "3.2.1"
